@@ -44,10 +44,9 @@ app.get('/user', FBAuth, getAuthenticatedUser);
 app.get('/user/:handle', getUserDetails);
 app.post('/notifications', FBAuth, markNotificationsRead);
 
-exports.api = functions.region('europe-west1').https.onRequest(app);
+exports.api = functions.https.onRequest(app);
 
 exports.createNotificationOnLike = functions
-  .region('europe-west1')
   .firestore.document('likes/{id}')
   .onCreate((snapshot) => {
     return db
@@ -71,7 +70,6 @@ exports.createNotificationOnLike = functions
       .catch((err) => console.error(err));
   });
 exports.deleteNotificationOnUnLike = functions
-  .region('europe-west1')
   .firestore.document('likes/{id}')
   .onDelete((snapshot) => {
     return db
@@ -83,7 +81,6 @@ exports.deleteNotificationOnUnLike = functions
       });
   });
 exports.createNotificationOnComment = functions
-  .region('europe-west1')
   .firestore.document('comments/{id}')
   .onCreate((snapshot) => {
     return db
@@ -111,7 +108,6 @@ exports.createNotificationOnComment = functions
   });
 
 exports.onUserImageChange = functions
-  .region('europe-west1')
   .firestore.document('/users/{userId}')
   .onUpdate((change) => {
     console.log(change.before.data());
@@ -134,7 +130,6 @@ exports.onUserImageChange = functions
   });
 
 exports.onScreamDelete = functions
-  .region('europe-west1')
   .firestore.document('/screams/{screamId}')
   .onDelete((snapshot, context) => {
     const screamId = context.params.screamId;
